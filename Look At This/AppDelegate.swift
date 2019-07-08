@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let navigationController = UINavigationController(rootViewController: GalleryViewController())
         navigationController.navigationBar.barStyle = .blackTranslucent
+        navigationController.navigationBar.tintColor = .white
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
