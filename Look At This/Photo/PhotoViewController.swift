@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol InteractiveTransitionDelegate: class {
+    func interactiveTransitionDidChangeState(_ state: InteractiveTransitionState)
+}
+
 class PhotoViewController: UIViewController {
     
     // MARK: - Public Properties
@@ -14,6 +18,10 @@ class PhotoViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return navigationBarHidden
     }
+    
+    private(set) var interactiveTransitionIsActive = false
+    
+    weak var interactiveTransitionDelegate: InteractiveTransitionDelegate?
     
     // MARK: - Public Methods
     
@@ -56,6 +64,25 @@ extension PhotoViewController: PhotoViewCellDelegate {
     
     func photoViewCellDidTap(_ cell: PhotoViewCell) {
         toggleNavigationBar()
+    }
+    
+    func photoViewCell(_ cell: PhotoViewCell, didChangeTransitionState state: PhotoViewCell.TransitionState) {
+        switch state {
+        case .began:
+            interactiveTransitionIsActive = true
+            navigationController?.popViewController(animated: true)
+            
+        case .updating(let progress):
+            interactiveTransitionDelegate?.interactiveTransitionDidChangeState(.updating(progress: progress))
+            
+        case .finishing:
+            interactiveTransitionIsActive = false
+            interactiveTransitionDelegate?.interactiveTransitionDidChangeState(.finishing)
+            
+        case .cancelling:
+            interactiveTransitionIsActive = false
+            interactiveTransitionDelegate?.interactiveTransitionDidChangeState(.cancelling)
+        }
     }
     
 }
@@ -104,7 +131,7 @@ private extension PhotoViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.allowsMultipleSelection = true
         collectionView.isPagingEnabled = true
-        collectionView.alwaysBounceVertical = true
+        collectionView.alwaysBounceHorizontal = true
         collectionView.dataSource = self
         collectionView.delegate = self
         

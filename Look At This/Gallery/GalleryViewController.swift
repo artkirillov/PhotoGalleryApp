@@ -9,6 +9,15 @@ import UIKit
 
 class GalleryViewController: UIViewController {
     
+    // MARK: - Public Properties
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
+    var selectedItemFrame: CGRect?
+    var selectedImage: UIImage?
+    
     // MARK: - Public Methods
     
     override func loadView() {
@@ -34,6 +43,13 @@ class GalleryViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Look at this pictures!"
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setNeedsStatusBarAppearanceUpdate()
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
 }
@@ -74,6 +90,10 @@ extension GalleryViewController: UICollectionViewDataSource {
 extension GalleryViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cellFrame = collectionView.cellForItem(at: indexPath)?.frame ?? .zero
+        selectedItemFrame = collectionView.convert(cellFrame, to: view.window)
+        selectedImage = UIImage(imageLiteralResourceName: indexPath.item % 2 == 0 ? "01" : "02")
+        
         let photoViewController = PhotoViewController()
         navigationController?.pushViewController(photoViewController, animated: true)
     }

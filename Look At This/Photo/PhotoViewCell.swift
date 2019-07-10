@@ -9,15 +9,23 @@ import UIKit
 
 protocol PhotoViewCellDelegate: class {
     func photoViewCellDidTap(_ cell: PhotoViewCell)
+    func photoViewCell(_ cell: PhotoViewCell, didChangeTransitionState state: PhotoViewCell.TransitionState)
 }
 
 class PhotoViewCell: UICollectionViewCell {
     
+    // MARK: - Public Nested
+    
+    enum TransitionState {
+        case began
+        case updating(progress: CGFloat)
+        case finishing
+        case cancelling
+    }
+    
     // MARK: - Public Properties
     
     weak var delegate: PhotoViewCellDelegate?
-    
-    // MARK: - Public Nested
     
     static let reuseIdentifier = String(describing: PhotoViewCell.self)
     
@@ -90,6 +98,9 @@ class PhotoViewCell: UICollectionViewCell {
         return recoginzer
     }()
     
+    private var transitionIsUserDriving = false
+    private var scrollViewIsZoomingFast = false
+    
 }
 
 // MARK: - UIGestureRecognizerDelegate
@@ -107,6 +118,50 @@ extension PhotoViewCell: UIGestureRecognizerDelegate {
 // MARK: - UIScrollViewDelegate
 
 extension PhotoViewCell: UIScrollViewDelegate {
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard !scrollView.isZooming, !scrollView.isZoomBouncing, !scrollViewIsZoomingFast,
+            scrollView.zoomScale == scrollView.minimumZoomScale
+            else { return }
+        
+        let translation = currentVerticalTranslation()
+        if scrollView.isDragging || scrollView.isDecelerating {
+            imageView.transform.ty = translation
+        }
+        
+        guard scrollView.isDragging, !scrollView.isDecelerating else { return }
+        
+        if !transitionIsUserDriving && abs(translation) > 10.0 {
+            transitionIsUserDriving = true
+            delegate?.photoViewCell(self, didChangeTransitionState: .began)
+        }
+        
+        guard transitionIsUserDriving else { return }
+        delegate?.photoViewCell(self, didChangeTransitionState: .updating(progress: currentProgress()))
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint,
+                                          targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    {
+        guard transitionIsUserDriving else { return }
+        transitionIsUserDriving = false
+        
+        if abs(currentProgress()) > 0.2 || abs(velocity.y) > 0.5 {
+            targetContentOffset.pointee = scrollView.contentOffset
+            scrollView.contentInset.top = -scrollView.contentOffset.y
+            delegate?.photoViewCell(self, didChangeTransitionState: .finishing)
+        } else {
+            delegate?.photoViewCell(self, didChangeTransitionState: .cancelling)
+        }
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollViewIsZoomingFast = scrollView.isZooming
+    }
+    
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollViewIsZoomingFast = false
+    }
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
@@ -149,10 +204,10 @@ private extension PhotoViewCell {
     
     func updateInsets() {
         let verticalInset = bounds.height > imageView.frame.height ?
-            (bounds.height - imageView.frame.height) / 2 : 0
+            ceil((bounds.height - imageView.frame.height) / 2) : 0
         
         let horizontalInset = bounds.width > imageView.frame.width ?
-            (bounds.width - imageView.frame.width) / 2 : 0
+            ceil((bounds.width - imageView.frame.width) / 2) : 0
         
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
@@ -160,6 +215,14 @@ private extension PhotoViewCell {
             bottom: verticalInset,
             right: horizontalInset
         )
+    }
+    
+    func currentVerticalTranslation() -> CGFloat {
+        return -(scrollView.contentInset.top + scrollView.contentOffset.y)
+    }
+    
+    func currentProgress() -> CGFloat {
+        return currentVerticalTranslation() / scrollView.bounds.height * 2
     }
     
     @objc func handleSingleTap() {

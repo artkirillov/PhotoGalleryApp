@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210395DF22D4D3E600ABD634 /* GalleryPhotoViewTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210395DE22D4D3E600ABD634 /* GalleryPhotoViewTransition.swift */; };
 		21BBDA7322D200F9007EC462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA7222D200F9007EC462 /* AppDelegate.swift */; };
 		21BBDA7522D200F9007EC462 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA7422D200F9007EC462 /* GalleryViewController.swift */; };
 		21BBDA7A22D200FA007EC462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21BBDA7922D200FA007EC462 /* Assets.xcassets */; };
@@ -15,9 +16,11 @@
 		21BBDA8822D2106E007EC462 /* GalleryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA8722D2106E007EC462 /* GalleryViewCell.swift */; };
 		21BBDA8B22D21F1C007EC462 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA8A22D21F1C007EC462 /* PhotoViewController.swift */; };
 		21BBDA8D22D21FA2007EC462 /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA8C22D21FA2007EC462 /* PhotoViewCell.swift */; };
+		21C3FE9A22D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C3FE9922D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		210395DE22D4D3E600ABD634 /* GalleryPhotoViewTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotoViewTransition.swift; sourceTree = "<group>"; };
 		21BBDA6F22D200F9007EC462 /* Look At This.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Look At This.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21BBDA7222D200F9007EC462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21BBDA7422D200F9007EC462 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +31,7 @@
 		21BBDA8722D2106E007EC462 /* GalleryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewCell.swift; sourceTree = "<group>"; };
 		21BBDA8A22D21F1C007EC462 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		21BBDA8C22D21FA2007EC462 /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
+		21C3FE9922D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotoViewInteractiveTransition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		210EFA4422D6409300200D24 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				210395DE22D4D3E600ABD634 /* GalleryPhotoViewTransition.swift */,
+				21C3FE9922D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
 		21BBDA6622D200F9007EC462 = {
 			isa = PBXGroup;
 			children = (
@@ -60,6 +73,7 @@
 		21BBDA7122D200F9007EC462 /* Look At This */ = {
 			isa = PBXGroup;
 			children = (
+				210EFA4422D6409300200D24 /* Transition */,
 				21BBDA8922D21DD4007EC462 /* Photo */,
 				21BBDA8622D20FFE007EC462 /* Gallery */,
 				21BBDA7222D200F9007EC462 /* AppDelegate.swift */,
@@ -162,7 +176,9 @@
 				21BBDA7322D200F9007EC462 /* AppDelegate.swift in Sources */,
 				21BBDA8B22D21F1C007EC462 /* PhotoViewController.swift in Sources */,
 				21BBDA8522D20B0F007EC462 /* GalleryViewLayout.swift in Sources */,
+				21C3FE9A22D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift in Sources */,
 				21BBDA8822D2106E007EC462 /* GalleryViewCell.swift in Sources */,
+				210395DF22D4D3E600ABD634 /* GalleryPhotoViewTransition.swift in Sources */,
 				21BBDA8D22D21FA2007EC462 /* PhotoViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
