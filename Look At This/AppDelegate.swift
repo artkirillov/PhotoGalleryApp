@@ -9,11 +9,19 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    // MARK: - Public Properties
 
     var window: UIWindow? = UIWindow(frame: .zero)
+    
+    // MARK: - Public Methods
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let navigationController = UINavigationController(rootViewController: GalleryViewController())
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
+    {
+        let controller = GalleryViewController(photoService: photoService)
+        let navigationController = UINavigationController(rootViewController: controller)
         navigationController.navigationBar.barStyle = .blackTranslucent
         navigationController.navigationBar.tintColor = .white
         navigationController.delegate = self
@@ -21,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         return true
     }
+    
+    // MARK: - Private Properties
+    
+    private let photoService = PhotoServiceImpl()
     
 }
 

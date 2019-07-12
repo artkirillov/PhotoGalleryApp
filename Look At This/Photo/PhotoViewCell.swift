@@ -36,7 +36,7 @@ class PhotoViewCell: UICollectionViewCell {
         
         setupScrollView()
         setupImageView()
-        backgroundColor = .black
+        imageView.reset()
         
         _ = singleTapRecoginzer
         _ = doubleTapRecoginzer
@@ -48,9 +48,26 @@ class PhotoViewCell: UICollectionViewCell {
     
     // MARK: - Public Methods
     
-    func configure(with image: UIImage) {
-        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
-        imageView.image = image
+    func configure(with interactor: PhotoInteractor) {
+        imageView.reset()
+        scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        interactor.downloadPhoto() { [weak self] image, error in
+            guard let slf = self, error == nil else { return }
+            UIView.transition(
+                with: slf.imageView,
+                duration: 0.2,
+                options: [.transitionCrossDissolve],
+                animations: {
+                    slf.imageView.image = image
+                    slf.setNeedsLayout()
+                    slf.layoutIfNeeded()
+            },
+                completion: nil
+            )
+        }
+        
+        self.interactor?.cancelDownloading()
+        self.interactor = interactor
     }
     
     override func layoutSubviews() {
@@ -98,6 +115,7 @@ class PhotoViewCell: UICollectionViewCell {
         return recoginzer
     }()
     
+    private var interactor: PhotoInteractor?
     private var transitionIsUserDriving = false
     private var scrollViewIsZoomingFast = false
     

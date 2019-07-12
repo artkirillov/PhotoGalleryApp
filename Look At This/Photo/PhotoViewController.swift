@@ -11,6 +11,10 @@ protocol InteractiveTransitionDelegate: class {
     func interactiveTransitionDidChangeState(_ state: InteractiveTransitionState)
 }
 
+protocol PhotoViewControllerDelegate: class {
+    func photoViewController(_ controller: PhotoViewController, didChangeCurrentIndex: Int)
+}
+
 class PhotoViewController: UIViewController {
     
     // MARK: - Public Properties
@@ -21,20 +25,50 @@ class PhotoViewController: UIViewController {
     
     private(set) var interactiveTransitionIsActive = false
     
+    weak var delegate: PhotoViewControllerDelegate?
     weak var interactiveTransitionDelegate: InteractiveTransitionDelegate?
+    
+    private(set) var currentIndex: Int
+    
+    // MARK: - Constructors
+    
+    init(currentIndex: Int, photoService: PhotoService) {
+        self.currentIndex = currentIndex
+        self.photoService = photoService
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        let author = photoService.photoInteractor(forPhotoWithIndex: currentIndex)?.author
+        title = "Photo by \(author ?? "")"
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Public Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Picture by Artem Kirillov"
         setupCollectionView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        collectionView?.scrollToItem(
+            at: IndexPath(item: currentIndex, section: 0),
+            at: .centeredHorizontally,
+            animated: false
+        )
     }
     
     // MARK: - Private Properties
     
     private var navigationBarHidden = false
+    private let photoService: PhotoService
+    private var collectionView: UICollectionView?
     
 }
 
@@ -43,15 +77,17 @@ class PhotoViewController: UIViewController {
 extension PhotoViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return photoService.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.reuseIdentifier, for: indexPath) as? PhotoViewCell else {
-            assert(false, "Cell for gallery view must be of type PhotoViewCell")
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoViewCell.reuseIdentifier, for: indexPath) as? PhotoViewCell, let photoInteractor = photoService.photoInteractor(forPhotoWithIndex: indexPath.item)
+        else {
+            assert(false, "Cell for gallery view must be of type PhotoViewCell with valid photo interactor")
             return UICollectionViewCell()
         }
-        cell.configure(with: UIImage(imageLiteralResourceName: indexPath.item % 2 == 0 ? "01" : "02"))
+        title = "Photo by \(photoInteractor.author)"
+        cell.configure(with: photoInteractor)
         cell.delegate = self
         
         return cell
@@ -145,12 +181,24 @@ private extension PhotoViewController {
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: -Static.spacing / 2),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: Static.spacing / 2),
             ])
+        self.collectionView = collectionView
     }
     
     func toggleNavigationBar() {
         navigationBarHidden.toggle()
         setNeedsStatusBarAppearanceUpdate()
         navigationController?.setNavigationBarHidden(navigationBarHidden, animated: false)
+    }
+    
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension PhotoViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        currentIndex = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        delegate?.photoViewController(self, didChangeCurrentIndex: currentIndex)
     }
     
 }
