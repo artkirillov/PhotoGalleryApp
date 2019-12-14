@@ -45,7 +45,7 @@ class GalleryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Look at this pictures!"
+        title = "Look at pictures!"
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         getData()
         
@@ -154,10 +154,9 @@ private extension GalleryViewController {
         selectedImage = cell.image
     }
     
-    @objc func getData() {
+    func getData() {
         photoService.fetchNextPage { [weak self] error in
             if let error = error {
-                self?.collectionView.refreshControl?.endRefreshing()
                 self?.present(UIAlertController.standard(error: error), animated: true, completion: nil)
             } else {
                 self?.collectionView.reloadData()

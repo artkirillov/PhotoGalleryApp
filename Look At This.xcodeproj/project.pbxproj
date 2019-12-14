@@ -24,6 +24,8 @@
 		21BBDA8B22D21F1C007EC462 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA8A22D21F1C007EC462 /* PhotoViewController.swift */; };
 		21BBDA8D22D21FA2007EC462 /* PhotoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BBDA8C22D21FA2007EC462 /* PhotoViewCell.swift */; };
 		21C3FE9A22D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C3FE9922D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift */; };
+		580315B223A5252D007F797F /* SCREENSHOT.gif in Resources */ = {isa = PBXBuildFile; fileRef = 580315B123A5252C007F797F /* SCREENSHOT.gif */; };
+		5822071E23A51856002454F7 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5822071D23A51856002454F7 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		21BBDA8A22D21F1C007EC462 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		21BBDA8C22D21FA2007EC462 /* PhotoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewCell.swift; sourceTree = "<group>"; };
 		21C3FE9922D5A3FC00E5C2BD /* GalleryPhotoViewInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotoViewInteractiveTransition.swift; sourceTree = "<group>"; };
+		580315B123A5252C007F797F /* SCREENSHOT.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = SCREENSHOT.gif; sourceTree = SOURCE_ROOT; };
+		5822071D23A51856002454F7 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,8 @@
 				21BBDA7922D200FA007EC462 /* Assets.xcassets */,
 				21BBDA7B22D200FA007EC462 /* LaunchScreen.storyboard */,
 				21BBDA7E22D200FA007EC462 /* Info.plist */,
+				5822071D23A51856002454F7 /* README.md */,
+				580315B123A5252C007F797F /* SCREENSHOT.gif */,
 			);
 			path = "Look At This";
 			sourceTree = "<group>";
@@ -205,6 +211,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				580315B223A5252D007F797F /* SCREENSHOT.gif in Resources */,
+				5822071E23A51856002454F7 /* README.md in Resources */,
 				21BBDA7D22D200FA007EC462 /* LaunchScreen.storyboard in Resources */,
 				21BBDA7A22D200FA007EC462 /* Assets.xcassets in Resources */,
 			);

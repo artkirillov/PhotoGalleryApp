@@ -12,7 +12,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Public Properties
 
-    var window: UIWindow? = UIWindow(frame: .zero)
+    var window: UIWindow?
     
     // MARK: - Public Methods
 
@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.navigationBar.barStyle = .blackTranslucent
         navigationController.navigationBar.tintColor = .white
         navigationController.delegate = self
+
+        window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         return true
